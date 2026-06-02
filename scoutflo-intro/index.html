@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+    <style>
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000814;
+        font-family: "Inter", sans-serif;
+      }
+
+      .scene {
+        position: absolute;
+        top: 0; left: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #000814;
+      }
+
+      /* ── Scene 1: Logo ───────────────────────────────── */
+      #scene1 { z-index: 1; }
+
+      .s1-glow {
+        position: absolute;
+        width: 900px; height: 900px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,195,0,0.12) 0%, transparent 70%);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .s1-ring {
+        position: absolute;
+        width: 600px; height: 600px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,195,0,0.15);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .s1-ring2 {
+        position: absolute;
+        width: 820px; height: 820px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,195,0,0.07);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .s1-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .logo-mark {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 28px;
+      }
+
+      .logo-wordmark {
+        font-size: 96px;
+        font-weight: 800;
+        letter-spacing: -3px;
+        color: #E5E5E5;
+      }
+
+      .logo-wordmark span {
+        color: #FFC300;
+      }
+
+      .logo-tagline {
+        margin-top: 20px;
+        font-size: 26px;
+        font-weight: 300;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        color: rgba(229,229,229,0.55);
+      }
+
+      /* ── Scene 2: Metrics ────────────────────────────── */
+      #scene2 { z-index: 2; opacity: 0; }
+
+      .s2-bg-line {
+        position: absolute;
+        width: 100%; height: 1px;
+        background: rgba(255,195,0,0.08);
+        top: 50%;
+      }
+
+      .s2-glow-left {
+        position: absolute;
+        width: 700px; height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,195,0,0.09) 0%, transparent 70%);
+        top: 50%; left: 10%;
+        transform: translate(-50%, -50%);
+      }
+
+      .s2-glow-right {
+        position: absolute;
+        width: 700px; height: 700px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,195,0,0.09) 0%, transparent 70%);
+        top: 50%; right: -5%;
+        transform: translate(0, -50%);
+      }
+
+      .s2-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 140px;
+        width: 100%;
+        height: 100%;
+        padding: 0 200px;
+      }
+
+      .metric-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        max-width: 560px;
+      }
+
+      .metric-bar-track {
+        width: 100%;
+        height: 4px;
+        background: rgba(255,195,0,0.18);
+        border-radius: 2px;
+        margin-bottom: 48px;
+        overflow: hidden;
+      }
+
+      .metric-bar-fill {
+        height: 100%;
+        width: 0%;
+        background: #FFC300;
+        border-radius: 2px;
+      }
+
+      .metric-value {
+        font-size: 120px;
+        font-weight: 800;
+        letter-spacing: -4px;
+        color: #FFC300;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+        min-width: 3ch;
+        text-align: center;
+      }
+
+      .metric-unit {
+        font-size: 48px;
+        font-weight: 300;
+        color: rgba(229,229,229,0.6);
+        margin-top: 12px;
+        letter-spacing: 2px;
+      }
+
+      .metric-label {
+        margin-top: 24px;
+        font-size: 22px;
+        font-weight: 400;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: rgba(229,229,229,0.45);
+      }
+
+      .metric-divider {
+        width: 1px;
+        height: 280px;
+        background: rgba(255,195,0,0.15);
+        flex-shrink: 0;
+      }
+
+      .s2-headline {
+        position: absolute;
+        top: 160px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 30px;
+        font-weight: 300;
+        letter-spacing: 8px;
+        text-transform: uppercase;
+        color: rgba(229,229,229,0.35);
+        white-space: nowrap;
+      }
+
+      /* ── Scene 3: CTA ────────────────────────────────── */
+      #scene3 { z-index: 3; opacity: 0; }
+
+      .s3-glow {
+        position: absolute;
+        width: 1100px; height: 1100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,195,0,0.1) 0%, transparent 65%);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .s3-ring {
+        position: absolute;
+        width: 700px; height: 700px;
+        border-radius: 50%;
+        border: 1px solid rgba(255,195,0,0.12);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .s3-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 0 240px;
+        gap: 32px;
+      }
+
+      .s3-eyebrow {
+        font-size: 20px;
+        font-weight: 400;
+        letter-spacing: 8px;
+        text-transform: uppercase;
+        color: #FFC300;
+      }
+
+      .s3-headline {
+        font-size: 88px;
+        font-weight: 800;
+        letter-spacing: -2px;
+        color: #E5E5E5;
+        text-align: center;
+        max-width: 1200px;
+        line-height: 1.05;
+      }
+
+      .s3-sub {
+        font-size: 30px;
+        font-weight: 300;
+        color: rgba(229,229,229,0.55);
+        text-align: center;
+        max-width: 800px;
+        line-height: 1.5;
+        margin-top: 8px;
+      }
+
+      .s3-cta-btn {
+        margin-top: 24px;
+        padding: 26px 80px;
+        background: #FFC300;
+        color: #000814;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        border-radius: 4px;
+      }
+
+      .s3-url {
+        font-size: 22px;
+        font-weight: 300;
+        letter-spacing: 3px;
+        color: rgba(229,229,229,0.35);
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="scoutflo-intro"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="15"
+    >
+      <!-- ── Scene 1: Logo fade-in ──────────────────── -->
+      <div id="scene1" class="scene">
+        <div class="s1-glow" id="s1-glow"></div>
+        <div class="s1-ring" id="s1-ring"></div>
+        <div class="s1-ring2" id="s1-ring2"></div>
+        <div class="s1-content">
+          <!-- SVG scout/radar logomark -->
+          <svg id="s1-logo-mark" class="logo-mark" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="54" stroke="#FFC300" stroke-width="3" opacity="0.3"/>
+            <circle cx="60" cy="60" r="36" stroke="#FFC300" stroke-width="3" opacity="0.6"/>
+            <circle cx="60" cy="60" r="8" fill="#FFC300"/>
+            <line x1="60" y1="6" x2="60" y2="60" stroke="#FFC300" stroke-width="3" stroke-linecap="round"/>
+            <line x1="60" y1="60" x2="98" y2="35" stroke="#FFC300" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+          </svg>
+          <div id="s1-wordmark" class="logo-wordmark">Scout<span>flo</span></div>
+          <div id="s1-tagline" class="logo-tagline">Intelligent Observability</div>
+        </div>
+      </div>
+
+      <!-- ── Scene 2: Metric counters ──────────────── -->
+      <div id="scene2" class="scene">
+        <div class="s2-glow-left"></div>
+        <div class="s2-glow-right"></div>
+        <div class="s2-bg-line"></div>
+        <div id="s2-headline" class="s2-headline">What we've resolved</div>
+        <div class="s2-content">
+          <div class="metric-card" id="s2-card-mttr">
+            <div class="metric-bar-track">
+              <div class="metric-bar-fill" id="s2-bar-mttr"></div>
+            </div>
+            <div class="metric-value" id="s2-val-mttr">0</div>
+            <div class="metric-unit">min</div>
+            <div class="metric-label">Mean Time to Resolve</div>
+          </div>
+          <div class="metric-divider" id="s2-divider"></div>
+          <div class="metric-card" id="s2-card-triaged">
+            <div class="metric-bar-track">
+              <div class="metric-bar-fill" id="s2-bar-triaged"></div>
+            </div>
+            <div class="metric-value" id="s2-val-triaged">0</div>
+            <div class="metric-unit">k+</div>
+            <div class="metric-label">Alerts Triaged</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Scene 3: CTA ───────────────────────────── -->
+      <div id="scene3" class="scene">
+        <div class="s3-glow" id="s3-glow"></div>
+        <div class="s3-ring" id="s3-ring"></div>
+        <div class="s3-content">
+          <div id="s3-eyebrow" class="s3-eyebrow">Stop firefighting. Start shipping.</div>
+          <div id="s3-headline" class="s3-headline">Resolve incidents<br>before they hurt</div>
+          <div id="s3-sub" class="s3-sub">Scoutflo cuts MTTR, silences alert noise, and gives your team back its focus.</div>
+          <div id="s3-btn" class="s3-cta-btn">Get Early Access</div>
+          <div id="s3-url" class="s3-url">scoutflo.io</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      // ── Seeded PRNG (mulberry32) for determinism ──
+      function mulberry32(seed) {
+        return function() {
+          seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+          var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+          t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+          return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+      }
+      var rand = mulberry32(42);
+
+      // ── Scene 1: Logo fade-in (0s–3s) ────────────
+      // Ambient ring breathing (finite: covers 15s / 4s cycle ≈ 4 reps)
+      tl.to("#s1-ring", {
+        scale: 1.06, opacity: 0.25, duration: 2, ease: "sine.inOut",
+        repeat: 7, yoyo: true
+      }, 0);
+      tl.to("#s1-ring2", {
+        scale: 1.04, opacity: 0.18, duration: 2.8, ease: "sine.inOut",
+        repeat: 5, yoyo: true
+      }, 0.4);
+
+      // Logo elements entrance — from opacity 0
+      tl.from("#s1-logo-mark", { opacity: 0, scale: 0.7, duration: 1.0, ease: "expo.out" }, 0.2);
+      tl.from("#s1-wordmark",  { opacity: 0, y: 30,     duration: 0.7, ease: "power3.out" }, 0.7);
+      tl.from("#s1-tagline",   { opacity: 0, y: 20,     duration: 0.5, ease: "power2.out" }, 1.1);
+      tl.from("#s1-glow",      { opacity: 0, scale: 0.6, duration: 1.4, ease: "power1.out" }, 0.1);
+
+      // ── Transition 1→2: blur crossfade at 2.7s ──
+      var T1 = 2.7;
+      tl.to("#scene1", { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: 0.6, ease: "power2.inOut" }, T1);
+      tl.fromTo("#scene2",
+        { opacity: 0, filter: "blur(10px)", scale: 0.97 },
+        { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.6, ease: "power2.inOut" }, T1 + 0.1
+      );
+
+      // ── Scene 2: Metric counters (3s–12s) ────────
+      var S2 = T1 + 0.3; // ~3.0s
+
+      tl.from("#s2-headline", { opacity: 0, y: -20, duration: 0.5, ease: "power2.out" }, S2);
+
+      // Card 1: MTTR
+      tl.from("#s2-card-mttr", { opacity: 0, y: 50, duration: 0.6, ease: "expo.out" }, S2 + 0.3);
+      tl.to("#s2-bar-mttr", { width: "78%", duration: 1.4, ease: "power2.out" }, S2 + 0.5);
+
+      // MTTR counter: counts 0 → 4 (minutes)
+      var mttrObj = { val: 0 };
+      tl.to(mttrObj, {
+        val: 4,
+        duration: 1.6,
+        ease: "power2.out",
+        onUpdate: function() {
+          document.getElementById("s2-val-mttr").textContent = Math.round(mttrObj.val);
+        }
+      }, S2 + 0.5);
+
+      // Divider entrance
+      tl.from("#s2-divider", { opacity: 0, scaleY: 0, duration: 0.5, ease: "power2.out", transformOrigin: "top center" }, S2 + 0.8);
+
+      // Card 2: Alerts triaged
+      tl.from("#s2-card-triaged", { opacity: 0, y: 50, duration: 0.6, ease: "back.out(1.4)" }, S2 + 0.9);
+      tl.to("#s2-bar-triaged", { width: "92%", duration: 1.6, ease: "power2.out" }, S2 + 1.1);
+
+      // Alerts counter: counts 0 → 120
+      var alertsObj = { val: 0 };
+      tl.to(alertsObj, {
+        val: 120,
+        duration: 1.8,
+        ease: "power2.out",
+        onUpdate: function() {
+          document.getElementById("s2-val-triaged").textContent = Math.round(alertsObj.val);
+        }
+      }, S2 + 1.1);
+
+      // ── Transition 2→3: blur crossfade at 11.5s ──
+      var T2 = 11.5;
+      tl.to("#scene2", { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: 0.6, ease: "power2.inOut" }, T2);
+      tl.fromTo("#scene3",
+        { opacity: 0, filter: "blur(10px)", scale: 0.97 },
+        { opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.6, ease: "power2.inOut" }, T2 + 0.1
+      );
+
+      // ── Scene 3: CTA (12s–15s) ───────────────────
+      var S3 = T2 + 0.3; // ~11.8s
+
+      // Ambient glow
+      tl.to("#s3-glow", { scale: 1.08, duration: 3, ease: "sine.inOut", repeat: 1, yoyo: true }, S3);
+      tl.to("#s3-ring", {
+        scale: 1.05, opacity: 0.25, duration: 2.5, ease: "sine.inOut",
+        repeat: 1, yoyo: true
+      }, S3 + 0.3);
+
+      // CTA entrances
+      tl.from("#s3-eyebrow",  { opacity: 0, y: -20, duration: 0.5, ease: "power2.out" }, S3 + 0.1);
+      tl.from("#s3-headline", { opacity: 0, y: 40,  duration: 0.7, ease: "expo.out"   }, S3 + 0.3);
+      tl.from("#s3-sub",      { opacity: 0, y: 30,  duration: 0.6, ease: "power3.out" }, S3 + 0.6);
+      tl.from("#s3-btn",      { opacity: 0, scale: 0.9, duration: 0.5, ease: "back.out(1.5)" }, S3 + 0.9);
+      tl.from("#s3-url",      { opacity: 0, duration: 0.4, ease: "power1.out" }, S3 + 1.2);
+
+      // Final fade to black at 14.5s
+      tl.to("#scene3", { opacity: 0, duration: 0.5, ease: "power2.in" }, 14.5);
+
+      // Hard-kill scenes after they exit to prevent overlap on scrub
+      tl.set("#scene2", { visibility: "hidden" }, T2 + 0.7);
+      tl.set("#scene3", { visibility: "hidden" }, 15.1);
+
+      window.__timelines["scoutflo-intro"] = tl;
+    </script>
+  </body>
+</html>
